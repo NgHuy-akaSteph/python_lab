@@ -217,9 +217,281 @@ a, b, c = map(int, input('Nhap 3 so nguyen: ').split()) # 1 2 3
             return 1
         return n * factorial(n-1)
 ```
-### 10. Scope && BigO
-### 11. List
-### 12. Unpacking, Tuple, Map, Filter
+### 10. Scope
+#### 10.1 Local
+- Bien duoc khai bao trong pham vi cua 1 ham.
+- Bien nay chi ton tai va co gia tri trong ham do.
+```python
+    def show():
+        a = 100
+        print(a)
+    show() # 100
+    print(a) # NameError: name 'a' is not defined
+```
+#### 10.2 Global
+- Bien duoc khai bao ngoai cac ham
+- Bien nay co pham vi truy cap trong toan bo file ma nguon
+- De thay doi gia tri cua bien toan cuc trong ham con, su dung tu khoa _**global**_.
+Neu khong Python se  tao 1 bien _**local**_ co cung ten vs bien _**global**_ 
+va nhung thay doi o bien nay khong anh huong den bien _**global**_
+```python
+    a = 100
+    def show():
+        global a
+        a = 200
+        print(a)
+    show() # 200
+    print(a) # 200
+```
+#### 10.3 Enclosed
+- Trong nested function, khi khai bao 2 bien co cung ten o trong 2 ham nay thi 2 bien co pham vi khac nhau
+- Bien o ham ben ngoai goi la bien _**enclosed**_
+```python
+    def outer():
+        a = 100
+        def inner():
+            a = 200
+            print(a)
+        inner() # 200
+        print(a) # 100
+    outer()
+```
+- Su dung keyword _**nonlocal**_ de thay doi gia tri cua bien **_enclosed_**
+```python
+    def outer():
+        a = 100
+        def inner():
+            nonlocal a
+            a = 200
+            print(a)
+        inner() # 200
+        print(a) # 200
+    outer()
+```
+### 11. List, List Slicing, List Comprehension, Lamda
+#### 11.1 List
+- _**List**_ tuong tu cau truc **_Array_** trong C++
+- Tinh chat:
+    + List are ordered : cac phan tu trong list la co thu tu
+    + Accessed by index : truy cap vao phan tu bang chi so
+    + Lists can contain any arbitrary objects : co the chua bat ky doi tuong nao
+    + List are mutable : co the thay doi noi dung cua list
+```python
+    #Khai bao list
+    a = [1, 2, 3, 4, 5]
+    b = ['a', 'b', 'c']
+    c = [1, 'a', 2.5]
+    d = []
+    e = list()
+    print(type(a)) # <class 'list'>
+    print(type(e)) # <class 'list'>
+    
+    # len(list) : tra ve so phan tu trong list
+    print(len(a)) # 5
+    
+    # Truy cap theo chi so, 
+    # Co ho tro chi so am. Chi so am se duoc tinh tu cuoi list
+    print(a[0]) # 1
+    print(a[-1]) # 5
+    
+    # Duyet list
+    # for in range
+    for i in range(len(a)):
+        print(a[i], end=' ')
+    # for each
+    for i in a:
+        print(i, end=' ')
+    
+    # Thay doi gia tri cua phan tu
+    # Thay doi gia tri cua phan tu thong qua chi so: a[index] = value
+    a[0] = 100 # a = [100, 2, 3, 4, 5]
+    
+    # Them phan tu vao list
+    # append(value) : them phan tu vao cuoi list
+    a.append(6) # a = [100, 2, 3, 4, 5, 6]
+    # insert(index, value) : them phan tu vao vi tri index
+    a.insert(1, 200) # a = [100, 200, 2, 3, 4, 5, 6]
+    # extend(list) : them list vao list
+    a.extend([7, 8, 9]) # a = [100, 200, 2, 3, 4, 5, 6, 7, 8, 9]
+    
+    # Xoa phan tu khoi list
+    # remove(value) : xoa phan tu dau tien co gia tri value
+    a.remove(200) # a = [100, 2, 3, 4, 5, 6, 7, 8, 9]
+    # pop(index) : xoa phan tu tai vi tri index
+    a.pop(0) # a = [2, 3, 4, 5, 6, 7, 8, 9]
+    # clear() : xoa toan bo phan tu trong list
+    a.clear() # a = []
+    
+    # Nhan ban list
+    f = a * 2 # f = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9]
+    e = [0] * 10 # -> tao list co 10 phan tu 0
+    
+    # Tim kiem phan tu trong list
+    # index(value) : tra ve chi so cua phan tu dau tien co gia tri value
+    print(a.index(3)) # 1
+    # count(value) : dem so lan xuat hien cua value trong list
+    print(a.count(3)) # 1
+    # in/not in : kiem tra phan tu co trong list hay khong
+    print(3 in a) # True
+    print(3 not in a) # False
+    
+    # Sap xep list
+    # sort() : sap xep list tang dan
+    a.sort() # a = [2, 3, 4, 5, 6, 7, 8, 9]
+    # reverse() : dao nguoc list
+    a.reverse() # a = [9, 8, 7, 6, 5, 4, 3, 2]
+    
+    # Mot so ham khac
+    # copy() : sao chep list
+    b = a.copy() # b = [9, 8, 7, 6, 5, 4, 3, 2]
+    # list() : chuyen doi tu tuple, set, dictionary sang list
+    c = list((1, 2, 3)) # c = [1, 2, 3]
+    # max(), min(), sum()
+    print(max(a)) # 9
+    print(min(a)) # 2
+    print(sum(a)) # 44
+    # all() : tra ve True neu tat ca phan tu trong list la True
+    # any() : tra ve True neu co it nhat 1 phan tu la True
+    
+    
+
+```
+#### 11.2 List Slicing
+- Python list slicing la mot ky thuat giup ban co the truy cap vao mot khoang phan tu trong list thong qua toan tu
+- Cu phap : List[start:stop:step]
+  - start : chi so bat dau : neu < 0 thi start bat dau tu vi tri cuoi cung cua list
+  - stop : chi so ket thuc : neu > len(list) thi stop = len(list)
+  - step : buoc nhay : neu < 0 thi dao nguoc list
+  - Neu start & stop deu am thi step cung phai am neu khong se tra ve list rong
+
+```python
+    a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    print(a[0:5]) # [1, 2, 3, 4, 5]
+    print(a[:5]) # [1, 2, 3, 4, 5]
+    print(a[5:]) # [6, 7, 8, 9]
+    print(a[0:9:2]) # [1, 3, 5, 7, 9]
+    print(a[::2]) # [1, 3, 5, 7, 9]
+    print(a[::-1]) # [9, 8, 7, 6, 5, 4, 3, 2, 1]
+    print(a[-1:-5:-1])  # [9, 8, 7, 6]
+    print(a[-1:-5:1]) # []
+
+    # Thay doi gia tri cua list thong qua slicing
+    a[1:3] = [10, 11] # a = [1, 10, 11, 4, 5, 6, 7, 8, 9]
+    a[1:3] = [10, 11, 12] # a = [1, 10, 11, 12, 4, 5, 6, 7, 8, 9]
+    a[1:3] = [] # a = [1, 12, 4, 5, 6, 7, 8, 9]
+    
+    # Shallowing copy
+    b = a[:] # b = [1, 12, 4, 5, 6, 7, 8, 9]
+    print(b) # [1, 12, 4, 5, 6, 7, 8, 9]
+    print(b is a) # False
+    print(b == a) # True
+```
+#### 11.4 Lamda
+- Lamda function la mot ham khong ten, khong can dung tu khoa def (anonymous function)
+- IIFE (Immediately Invoked Function Expression) : ham duoc goi ngay sau khi duoc dinh nghia
+- Cu phap : lambda arguments : expression (arguments : danh sach cac doi so, expression : bieu thuc)
+```python
+    #Ex:
+    add = lambda a, b : a + b
+    print(add(2, 3)) # 5
+    # Lamda function co the co nhieu doi so va IIFE
+    print((lambda x, y, z : x + y - z)(5, 6, 7)) # 4
+    # Lamda function co the su dung trong ham khac
+    def my_func(n):
+        return lambda a : a * n
+    double = my_func(2)
+    print(double(5)) # 10
+
+    # Su dung lamda function trong sorted(), filter(), map()
+    a = [1, 2, 3, 4, 5]
+    b = sorted(a, key = lambda x : x % 2) # b = [2, 4, 1, 3, 5]
+    c = filter(lambda x : x % 2 == 0, a) # c = [2, 4]
+    d = map(lambda x : x ** 2, a) # d = [1, 4, 9, 16, 25]
+```
+#### 11.3 List Comprehension
+- List comprehension la mot cach tao list moi tu list cu bang cach su dung cu phap nhanh chong va de hieu
+- Cu phap : [expression for item in iterable if condition]
+```python
+    #Ex:
+    a = [1, 2, 3, 4, 5]
+    # Tao list moi chua cac phan tu la binh phuong cua cac phan tu trong list a
+    b = [i ** 2 for i in a] # b = [1, 4, 9, 16, 25]
+    # Tao list moi chua cac phan tu chan trong list a
+    c = [i for i in a if i % 2 == 0] # c = [2, 4]
+    # Tao list moi chua cac phan tu chan va binh phuong cua cac phan tu le trong list a
+    d = [i if i % 2 == 0 else i ** 2 for i in a] # d = [1, 2, 9, 4, 25]
+```
+### 12. Unpacking, Tuple, Map, Filter, Reduce
+#### 12.1 Unpacking
+- Unpacking la mot ky thuat giup ban co the chia nho cac phan tu trong list, tuple, set hoac iterable ra thanh cac bien rieng le
+- Dung _ trong truong hop khong quan tam den gia tri cua phan tu do
+```python
+    #Ex:
+    a = [1, 2, 3]
+    x, y, z = a
+    print(x, y, z) # 1 2 3
+    
+    s = 'abc'
+    x, y, z = s
+    print(x, y, z) # a b c
+    
+    b = [1, 2, 3, 4, 5]
+    x, y, *z = b
+    print(x, y, z) # 1 2 [3, 4, 5]
+```
+```python
+    # Unpacking trong for loop
+    a = [(1, 2), (3, 4), (5, 6)]
+    for x, y in a:
+        print(x, y)
+    
+    # Unpacking trong function
+    def show(a, b, c):
+        print(a, b, c)
+    show(*a) # 1 2 3
+```
+
+#### 12.2 Tuple
+- Tuple la mot collection co thu tu trong python
+- Cac tinh chat cua tuple:
+    - Tuple are ordered : cac phan tu trong tuple la co thu tu
+    - Accessed by index : truy cap vao phan tu bang chi so
+    - Tuple can contain any arbitrary objects : co the chua bat ky doi tuong nao
+    - Tuple are immutable : khong the thay doi noi dung cua tuple 
+  nhung neu item trong tuple la object co the thay doi duoc thi van co the thay doi cac item do
+```python
+a = (1, 2, 3, 4, 5)
+print(type(a)) # <class 'tuple'>
+print(a[0]) # 1
+print(a[-1]) # 5
+print(a[1:3]) # (2, 3)
+print(a[::-1]) # (5, 4, 3, 2, 1)
+
+s = 'abcdef'
+b = tuple(s) # b = ('a', 'b', 'c', 'd', 'e', 'f')
+
+# Sorting tuple : sorted() -> list
+c = (3, 2, 1, 4, 5)
+d = sorted(c) # d = [1, 2, 3, 4, 5]
+c = tuple(d) # c = (1, 2, 3, 4, 5)
+```
+#### 12.3 Map, Filter, Reduce
+- Map : ap dung mot ham len tat ca cac phan tu cua 1 iterable
+```python
+    a = [1, 2, 3, 4, 5]
+    b = map(lambda x : x ** 2, a) # b = [1, 4, 9, 16, 25]
+```
+- Filter : loc cac phan tu cua 1 iterable
+```python
+    a = [1, 2, 3, 4, 5]
+    b = filter(lambda x : x % 2 == 0, a) # b = [2, 4]
+```
+- Reduce : ap dung mot ham len tat ca cac phan tu cua 1 iterable de tinh toan ra 1 gia tri duy nhat
+```python
+    from functools import reduce
+    a = [1, 2, 3, 4, 5]
+    b = reduce(lambda x, y : x + y, a) # b = 15
+```
 ### 13. Sort
 ### 14. Set, Dictionary, Counter
 ### 15. Matrix
