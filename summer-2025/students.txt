@@ -1,0 +1,10 @@
+SV008|Dang Van H|Nam|05/10/2005|9.5|9.6|9.7|9.6|Giỏi
+SV001|Nguyen Van A|Nam|12/12/2004|9.5|9.5|9.5|9.5|Giỏi
+SV002|Nguyen Van B|Nam|12/05/2005|9.3|9.4|9.5|9.4|Giỏi
+SV005|Pham Thi E|Nữ|30/01/2006|9.0|9.1|9.2|9.1|Giỏi
+SV010|Cao Van J|Nam|28/09/2005|8.8|9.0|9.1|9.0|Khá
+SV003|Tran Thi C|Nữ|23/08/2006|8.5|8.7|8.9|8.7|Khá
+SV007|Vu Thi G|Nữ|14/07/2006|8.0|8.2|8.4|8.2|Khá
+SV009|Bui Thi I|Nữ|19/04/2006|7.5|7.8|8.0|7.8|Trung Bình
+SV004|Le Van D|Nam|15/11/2005|7.0|7.5|7.8|7.4|Trung Bình
+SV006|Hoang Van F|Nam|22/03/2005|6.5|6.8|7.0|6.8|Trung Bình
